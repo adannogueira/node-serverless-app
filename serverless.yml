@@ -8,6 +8,8 @@ provider:
   name: aws
   runtime: nodejs14.x
   profile: serverless-admin
+  memorySize: 128
+  timeout: 10
   iam:
     role:
       statements:
@@ -20,7 +22,7 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - Fn::GetAtt: [ UsersTable, Arn ]
+            - Fn::GetAtt: [ TodosTable, Arn ]
   environment:
     TODO_TABLE: ${self:custom.tableName}
 
@@ -35,17 +37,18 @@ functions:
 
 resources:
   Resources:
-    UsersTable:
+    TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.tableName}
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-offline
