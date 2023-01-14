@@ -3,6 +3,13 @@ frameworkVersion: '3'
 
 custom:
   tableName: 'todos-table-${sls:stage}'
+  dynamodb:
+    stages:
+      - dev
+    start:
+      docker: true
+      port: 8000
+      inMemory: true
 
 provider:
   name: aws
@@ -83,4 +90,5 @@ resources:
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-dynamodb-local
   - serverless-offline

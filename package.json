@@ -4,6 +4,7 @@
   "description": "",
   "dependencies": {
     "aws-sdk": "^2.1290.0",
+    "serverless-dynamodb-local": "^0.2.40",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
