@@ -43,6 +43,14 @@ functions:
           method: get
           cors: true
 
+  find:
+    handler: app/findTodo.findTodo
+    events:
+      - http:
+          path: todos/{id}
+          method: get
+          cors: true
+
 resources:
   Resources:
     TodosTable:
