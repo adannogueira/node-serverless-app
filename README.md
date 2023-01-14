@@ -26,11 +26,20 @@ Compiling with Typescript...
 Using local tsconfig.json - tsconfig.json
 Typescript compiled.
 
-✔ Service deployed to stack node-serverless-app-dev (153s)
+✔ Service deployed to stack node-serverless-app-dev (142s)
 
-endpoint: POST - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos
+endpoints:
+  POST - https://xxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos
+  GET - https://xxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos
+  GET - https://xxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
+  DELETE - https://xxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
+  PUT - https://xxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
 functions:
-  create: node-serverless-app-dev-create (15 MB)
+  create: node-serverless-app-dev-create (14 MB)                                                                                                     
+  list: node-serverless-app-dev-list (14 MB)
+  find: node-serverless-app-dev-find (14 MB)
+  delete: node-serverless-app-dev-delete (14 MB)
+  update: node-serverless-app-dev-update (14 MB)
 ```
 
 ### Invocation
@@ -38,13 +47,17 @@ functions:
 After successful deployment, you can create a new todo by calling the corresponding endpoint:
 
 ```bash
-curl --request POST 'https://xxxxxx.execute-api.us-east-1.amazonaws.com/todos' --header 'Content-Type: application/json' --data-raw '{"title": "Any", "message": "any"}'
+curl --location --request POST 'https://xxxxxxx.execute-api.us-east-1.amazonaws.com/dev/todos' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "todo": "Any message"
+}'
 ```
 
 Which should result in the following response:
 
 ```bash
-{\"title\":\"Any\",\"message\":\"any\"}
+{\"statusCode\": 201, \"body\": {\"message\": \"Todo created successfully\"}}
 ```
 
 ### Local development
