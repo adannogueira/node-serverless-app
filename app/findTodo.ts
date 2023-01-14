@@ -1,9 +1,8 @@
-import AWS from "aws-sdk"
 import { Handler } from 'aws-lambda'
+import { dynamoDbClient } from './dynamoClient/dynamoClient';
 import { Response } from './interfaces/Response'
 
 const TODO_TABLE = process.env.TODO_TABLE;
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
 export const findTodo: Handler = async ({
   pathParameters: { id } }: any

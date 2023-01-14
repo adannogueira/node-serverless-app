@@ -1,14 +1,12 @@
-import AWS from "aws-sdk"
 import { Handler } from 'aws-lambda'
 import { v4 as uuid } from 'uuid'
 import { TodoParams } from './interfaces/TodoParams';
 import { Response } from './interfaces/Response';
+import { dynamoDbClient } from './dynamoClient/dynamoClient';
 
 const TODO_TABLE = process.env.TODO_TABLE;
-const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
-export const createTodo: Handler = async (event: any): Promise<Response> => {
-  const { todo } = JSON.parse(event.body)
+export const createTodo: Handler = async ({ body: { todo } }: any): Promise<Response> => {
   if (typeof todo !== 'string') return { statusCode: 400, body: "Invalid todo value" }
   const params = buildParams(todo)
   const result = await createDynamoData(params)
@@ -28,8 +26,7 @@ const buildParams = (todo: string): TodoParams => ({
 
 const createDynamoData = async (params: TodoParams): Promise<Response> => {
   const { $response: response } = await dynamoDbClient.put(params).promise()
-  console.log(response)
   return response.error
     ? { statusCode: 500, body: JSON.stringify(response.error) }
-    : { statusCode: 201, body: 'Todo created successfully' }
+    : { statusCode: 201, body: JSON.stringify({ message: 'Todo created successfully' }) }
 }
