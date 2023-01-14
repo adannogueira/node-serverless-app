@@ -59,6 +59,14 @@ functions:
           method: delete
           cors: true
 
+  update:
+    handler: app/updateTodo.updateTodo
+    events:
+      - http:
+          path: todos/{id}
+          method: put
+          cors: true
+
 resources:
   Resources:
     TodosTable:
