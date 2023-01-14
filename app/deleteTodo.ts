@@ -1,6 +1,5 @@
 import AWS from "aws-sdk"
 import { Handler } from 'aws-lambda'
-import { Key } from 'aws-sdk/clients/dynamodb'
 import { Response } from './interfaces/Response'
 
 const TODO_TABLE = process.env.TODO_TABLE;
@@ -9,11 +8,6 @@ const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 export const deleteTodo: Handler = async ({
   pathParameters: { id } }: any
 ): Promise<Response> => {
-  const rawResult = await findTodoById(id)
-  return rawResult
-}
-
-const findTodoById = async (id: Key): Promise<Response> => {
   const {
     $response: response
   } = await dynamoDbClient.delete({
@@ -21,7 +15,13 @@ const findTodoById = async (id: Key): Promise<Response> => {
     Key: { id }
   }).promise()
   if (response.error) {
-    return { statusCode: 500, body: JSON.stringify({ message: 'Todo not found'}) }
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Todo not found'})
+    }
   }
-  return { statusCode: 200, body: JSON.stringify({ message: 'Todo deleted successfully' }) }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Todo deleted successfully' })
+  }
 }
